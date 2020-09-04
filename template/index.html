@@ -8,14 +8,12 @@
 <!--    <label for="text">You:</label><br>-->
 <!--    <input type="text" id="text" name="text"><br>-->
     <button id=record>Start</button>
-    <button id=stopRecord disabled>Stop</button>
-    {{username}}
+    <button id=stopRecord type="button" disabled>Stop</button> <br>
 </form>
 <script>
 
     navigator.mediaDevices.getUserMedia({audio:true})
       .then(stream => {handlerFunction(stream)})
-
 
      function handlerFunction(stream) {
             rec = new MediaRecorder(stream);
@@ -33,6 +31,15 @@
             fetch("/", {
                 method: "post",
                 body: fd
+            }).then(response => {
+                response.json().then(resp => {
+                var h5 = document.createElement('h4');
+                    h5.textContent = 'Me: ' + resp.meText;
+                    document.body.appendChild(h5);
+                   var h1 = document.createElement('h4');
+                    h1.textContent = 'BOT: ' + resp.botText;
+                    document.body.appendChild(h1);
+                });
             });
       }
       record.onclick = e => {

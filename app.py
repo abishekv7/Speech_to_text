@@ -46,9 +46,12 @@ def index():
         # return the text for all chunks detected
         os.remove('audio.wav')
         os.remove('audio1.wav')
-        result = {'text': val}
+        result = {'botText': val, 'meText': text}
         print(val)
-        return render_template('Chat.html', username=val)
+        response = app.response_class(response=json.dumps(result),
+                                      status=200,
+                                      mimetype='application/json')
+        return response
     else:
         return render_template('index.html')
 
